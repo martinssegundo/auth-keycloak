@@ -4,7 +4,8 @@ import lombok.*;
 
 @Builder
 @Data
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserAuthDTO {
     private String token;
     private String refreshToken;

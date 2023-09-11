@@ -1,13 +1,12 @@
 package br.com.auth.keycloak.apis.dtos;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 @Builder
 @Data
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 public class LoginDataDTO {
-    private String login;
+    private String user;
     private String password;
 }

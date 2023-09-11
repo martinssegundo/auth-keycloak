@@ -1,15 +1,15 @@
 package br.com.auth.keycloak.domain.entities;
 
 public class Login {
-    private String login;
+    private String user;
     private String password;
 
-    public String getLogin() {
-        return login;
+    public String getUser() {
+        return user;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setUser(String user) {
+        this.user = user;
     }
 
     public String getPassword() {

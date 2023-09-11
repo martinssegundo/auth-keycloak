@@ -12,7 +12,7 @@ public class AuthenticationUtil {
 
 
     public static AuthorisationDataDTO getAuthentication() throws IOException {
-        String json = new String(Files.readAllBytes(Paths.get("src/test/resources/exemplo.json")), StandardCharsets.UTF_8);
+        String json = new String(Files.readAllBytes(Paths.get("src/test/resources/jsons/authentication.json")), StandardCharsets.UTF_8);
         ObjectMapper objectMapper = new ObjectMapper();
         AuthorisationDataDTO authorization = objectMapper.readValue(json, AuthorisationDataDTO.class);
         return authorization;

@@ -4,40 +4,47 @@ import br.com.auth.keycloak.clients.KeycloakClient;
 import br.com.auth.keycloak.clients.dtos.AuthorisationDataDTO;
 import br.com.auth.keycloak.domain.entities.Authorization;
 import br.com.auth.keycloak.domain.entities.Login;
+import br.com.auth.keycloak.mappers.AuthenticationMapper;
 import br.com.auth.keycloak.util.AuthenticationUtil;
-import io.quarkus.test.Mock;
 import io.quarkus.test.junit.QuarkusTest;
 import io.smallrye.mutiny.Uni;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import java.io.IOException;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 @QuarkusTest
 class LoginUseCaseKeycloakTest {
     @Mock
     KeycloakClient keycloakClient;
+    @Mock
+    AuthenticationMapper authenticationMapper;
     LoginUseCaseKeycloak loginUseCaseKeycloak;
 
     @BeforeEach
     void setUp() {
-        loginUseCaseKeycloak = new LoginUseCaseKeycloak(keycloakClient);
+        MockitoAnnotations.openMocks(this);
+        loginUseCaseKeycloak = new LoginUseCaseKeycloak(keycloakClient, authenticationMapper);
     }
 
     @Test
     void testLogin() throws IOException {
         var dataDTO = AuthenticationUtil.getAuthentication();
+        var dataAuth = buildAuthorization(dataDTO);
         when(keycloakClient.login(any(),any())).thenReturn(Uni.createFrom().item(dataDTO));
+        when(authenticationMapper.convertToAuthorization(dataDTO)).thenReturn(dataAuth);
         Uni<Authorization> result = loginUseCaseKeycloak.login(new Login());
         result.subscribe()
                 .with(data -> {
-                    assertEquals(data, buildAuthorization(dataDTO));
+                    assertEquals(data, dataAuth);
                 });
     }
 
