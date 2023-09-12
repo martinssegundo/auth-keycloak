@@ -1,6 +1,6 @@
 package br.com.auth.keycloak.clients;
 
-import br.com.auth.keycloak.clients.dtos.AuthorisationDataDTO;
+import br.com.auth.keycloak.clients.dtos.AuthorisationClientDataDTO;
 import io.smallrye.mutiny.Uni;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.HeaderParam;
@@ -18,5 +18,5 @@ public interface KeycloakClient {
     @POST
     @Path("/token")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    Uni<AuthorisationDataDTO> login(@HeaderParam(HttpHeaders.AUTHORIZATION) String authorizationHeader, Form authenticationInfo);
+    Uni<AuthorisationClientDataDTO> login(@HeaderParam(HttpHeaders.AUTHORIZATION) String authorizationHeader, Form authenticationInfo);
 }

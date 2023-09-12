@@ -1,7 +1,7 @@
 package br.com.auth.keycloak.domain.usecases.impl;
 
 import br.com.auth.keycloak.clients.KeycloakClient;
-import br.com.auth.keycloak.clients.dtos.AuthorisationDataDTO;
+import br.com.auth.keycloak.clients.dtos.AuthorisationClientDataDTO;
 import br.com.auth.keycloak.domain.entities.Authorization;
 import br.com.auth.keycloak.domain.entities.Login;
 import br.com.auth.keycloak.mappers.AuthenticationMapper;
@@ -10,7 +10,6 @@ import io.quarkus.test.junit.QuarkusTest;
 import io.smallrye.mutiny.Uni;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -48,7 +47,7 @@ class LoginUseCaseKeycloakTest {
                 });
     }
 
-    private Authorization buildAuthorization(AuthorisationDataDTO dataDTO){
+    private Authorization buildAuthorization(AuthorisationClientDataDTO dataDTO){
         return Authorization.builder()
                 .accessToken(dataDTO.getAccessToken())
                 .notBeforePolicy(dataDTO.getNotBeforePolicy())

@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 
 @Data
 @RequiredArgsConstructor
-public class AuthorisationDataDTO {
+public class AuthorisationClientDataDTO {
 
     @JsonProperty("access_token")
     private String accessToken;

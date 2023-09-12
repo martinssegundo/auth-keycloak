@@ -4,6 +4,7 @@ package br.com.auth.keycloak.apis;
 import br.com.auth.keycloak.apis.dtos.LoginDataDTO;
 import br.com.auth.keycloak.apis.dtos.UserAuthDTO;
 import br.com.auth.keycloak.domain.usecases.LoginUseCase;
+import br.com.auth.keycloak.mappers.AuthenticationMapper;
 import io.smallrye.mutiny.Uni;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -14,23 +15,23 @@ import jakarta.ws.rs.core.Response;
 @Path("/auth")
 public class AuthApi {
 
-    private final LoginUseCase loginUseCase;
+    private LoginUseCase loginUseCase;
+    private AuthenticationMapper authenticationMapper;
 
     @Inject
-    public AuthApi(@Named("loginUseCaseKeycloak") LoginUseCase loginUseCase) {
+    public AuthApi(@Named("loginUseCaseKeycloak") LoginUseCase loginUseCase,
+                   AuthenticationMapper authenticationMapper) {
         this.loginUseCase = loginUseCase;
+        this.authenticationMapper = authenticationMapper;
     }
 
     @POST
     @Path("/login")
     public Uni<Response> login(LoginDataDTO loginDataDTO) {
-        return Uni.createFrom()
-                .item(
+        return loginUseCase.login(authenticationMapper.convertToLogin(loginDataDTO))
+                .map(auth ->
                         Response.ok(
-                                UserAuthDTO.builder()
-                                        .refreshToken("refresh")
-                                        .token("toekn")
-                                        .build()
+                            authenticationMapper.convertToAuthorisationClientDataDTO(auth)
                         ).build()
                 );
     }
