@@ -1,6 +1,7 @@
 package br.com.auth.keycloak.configs;
 
-import br.com.auth.keycloak.clients.KeycloakClient;
+import br.com.auth.keycloak.clients.AuthenticationService;
+import br.com.auth.keycloak.clients.rest.KeycloakClient;
 import br.com.auth.keycloak.domain.usecases.impl.LoginUseCaseKeycloak;
 import br.com.auth.keycloak.mappers.AuthenticationMapper;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -12,20 +13,12 @@ import org.eclipse.microprofile.rest.client.inject.RestClient;
 @ApplicationScoped
 public class LoginProducers {
 
-    private KeycloakClient keycloakClient;
-    private AuthenticationMapper authenticationMapper;
-
-    @Inject
-    public LoginProducers(@RestClient KeycloakClient keycloakClient,
-                          AuthenticationMapper authenticationMapper) {
-        this.keycloakClient = keycloakClient;
-        this.authenticationMapper = authenticationMapper;
-    }
 
     @Produces
     @ApplicationScoped
     @Named("loginUseCaseKeycloak")
-    public LoginUseCaseKeycloak producesLoginUseCaseKeycloak(){
-        return new LoginUseCaseKeycloak(keycloakClient, authenticationMapper);
+    public LoginUseCaseKeycloak producesLoginUseCaseKeycloak(AuthenticationService authenticationService,
+                                                             AuthenticationMapper authenticationMapper){
+        return new LoginUseCaseKeycloak(authenticationService, authenticationMapper);
     }
 }

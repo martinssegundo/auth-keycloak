@@ -1,6 +1,7 @@
 package br.com.auth.keycloak.domain.usecases.impl;
 
-import br.com.auth.keycloak.clients.KeycloakClient;
+import br.com.auth.keycloak.clients.AuthenticationService;
+import br.com.auth.keycloak.clients.rest.KeycloakClient;
 import br.com.auth.keycloak.clients.dtos.AuthorisationClientDataDTO;
 import br.com.auth.keycloak.domain.entities.Authorization;
 import br.com.auth.keycloak.domain.entities.Login;
@@ -23,7 +24,7 @@ import static org.mockito.Mockito.when;
 @QuarkusTest
 class LoginUseCaseKeycloakTest {
     @Mock
-    KeycloakClient keycloakClient;
+    AuthenticationService authenticationService;
     @Mock
     AuthenticationMapper authenticationMapper;
     LoginUseCaseKeycloak loginUseCaseKeycloak;
@@ -31,14 +32,14 @@ class LoginUseCaseKeycloakTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        loginUseCaseKeycloak = new LoginUseCaseKeycloak(keycloakClient, authenticationMapper);
+        loginUseCaseKeycloak = new LoginUseCaseKeycloak(authenticationService, authenticationMapper);
     }
 
     @Test
     void testLogin() throws IOException {
         var dataDTO = AuthenticationUtil.getAuthentication();
         var dataAuth = buildAuthorization(dataDTO);
-        when(keycloakClient.login(any(),any())).thenReturn(Uni.createFrom().item(dataDTO));
+        when(authenticationService.login(any(),any())).thenReturn(Uni.createFrom().item(dataDTO));
         when(authenticationMapper.convertToAuthorization(dataDTO)).thenReturn(dataAuth);
         Uni<Authorization> result = loginUseCaseKeycloak.login(new Login());
         result.subscribe()

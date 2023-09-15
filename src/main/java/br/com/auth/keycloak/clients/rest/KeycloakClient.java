@@ -1,4 +1,4 @@
-package br.com.auth.keycloak.clients;
+package br.com.auth.keycloak.clients.rest;
 
 import br.com.auth.keycloak.clients.dtos.AuthorisationClientDataDTO;
 import io.smallrye.mutiny.Uni;
