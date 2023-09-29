@@ -11,12 +11,11 @@ import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.MediaType;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 
-@RegisterRestClient(configKey = "keycloak-api")
-@Path("/openid-connect")
-public interface KeycloakClient {
+@RegisterRestClient(configKey = "keycloak-ligin-api")
+@Path("/token")
+public interface KeycloakLoginClient {
 
     @POST
-    @Path("/token")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     Uni<AuthorisationClientDataDTO> login(@HeaderParam(HttpHeaders.AUTHORIZATION) String authorizationHeader, Form authenticationInfo);
 }

@@ -1,7 +1,6 @@
 package br.com.auth.keycloak.domain.usecases.impl;
 
 import br.com.auth.keycloak.clients.AuthenticationService;
-import br.com.auth.keycloak.clients.rest.KeycloakClient;
 import br.com.auth.keycloak.clients.dtos.AuthorisationClientDataDTO;
 import br.com.auth.keycloak.domain.entities.Authorization;
 import br.com.auth.keycloak.domain.entities.Login;

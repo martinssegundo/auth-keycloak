@@ -2,7 +2,6 @@ package br.com.auth.keycloak.apis;
 
 
 import br.com.auth.keycloak.apis.dtos.LoginDataDTO;
-import br.com.auth.keycloak.apis.dtos.UserAuthDTO;
 import br.com.auth.keycloak.domain.usecases.LoginUseCase;
 import br.com.auth.keycloak.mappers.AuthenticationMapper;
 import io.smallrye.mutiny.Uni;
