@@ -5,6 +5,7 @@ import br.com.auth.keycloak.clients.dtos.AuthorisationClientDataDTO;
 import br.com.auth.keycloak.clients.dtos.UserDTO;
 import br.com.auth.keycloak.clients.rest.KeycloakLoginClient;
 import br.com.auth.keycloak.clients.rest.KeycloakUserClient;
+import br.com.auth.keycloak.configs.KeycloakConfig;
 import br.com.auth.keycloak.domain.util.AuthenticationUtil;
 import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -20,8 +21,11 @@ public class AuthenticationKeycloakService implements AuthenticationService {
     private KeycloakLoginClient keycloakLoginClient;
     private KeycloakUserClient keycloakUserClient;
 
+    private KeycloakConfig keycloakConfig;
+
     public AuthenticationKeycloakService(@RestClient KeycloakLoginClient keycloakLoginClient,
-                                         @RestClient KeycloakUserClient keycloakUserClient){
+                                         @RestClient KeycloakUserClient keycloakUserClient,
+                                         KeycloakConfig keycloakConfig){
         this.keycloakLoginClient = keycloakLoginClient;
         this.keycloakUserClient = keycloakUserClient;
     }
@@ -37,6 +41,7 @@ public class AuthenticationKeycloakService implements AuthenticationService {
     @Override
     public Uni<Void> createUser(UserDTO userDTO) {
         log.debug("Create an user with keycloak");
-        return keycloakUserClient.createNewUser(userDTO);
+        return login(keycloakConfig.getUser(), keycloakConfig.getPassword())
+                .flatMap(login -> keycloakUserClient.createNewUser(login.getAccessToken(), userDTO));
     }
 }
