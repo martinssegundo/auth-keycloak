@@ -6,6 +6,7 @@ import br.com.auth.keycloak.domain.usecases.CreateUserUseCase;
 import br.com.auth.keycloak.mappers.UserMapper;
 import io.smallrye.mutiny.Uni;
 
+
 public class CreateUserUseCaseKeycloak implements CreateUserUseCase {
     private AuthenticationService authenticationService;
     private UserMapper userMapper;
@@ -15,6 +16,7 @@ public class CreateUserUseCaseKeycloak implements CreateUserUseCase {
         this.authenticationService = authenticationService;
         this.userMapper = userMapper;
     }
+
     @Override
     public Uni<Void> createUser(User user) {
         return authenticationService.createUser(userMapper.converToUserDTO(user));

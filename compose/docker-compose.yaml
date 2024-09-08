@@ -1,5 +1,3 @@
-version: '3.8'
-
 volumes:
   postgres_data:
     driver: local
@@ -18,7 +16,7 @@ services:
     networks:
       - keycloak-network
   keycloak:
-    image: jboss/keycloak:latest
+    image: quay.io/keycloak/keycloak:21.1.2
     environment:
       DB_VENDOR: POSTGRES
       DB_ADDR: postgres
@@ -28,6 +26,8 @@ services:
       DB_PASSWORD: keycloak
       KEYCLOAK_USER: admin
       KEYCLOAK_PASSWORD: admin
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
       # Uncomment the line below if you want to specify JDBC parameters. The parameter below is just an example, and it shouldn't be used in production without knowledge. It is highly recommended that you read the PostgreSQL JDBC driver documentation in order to use it.
       #JDBC_PARAMS: "ssl=true"
     ports:
@@ -36,6 +36,8 @@ services:
       - postgres
     networks:
       - keycloak-network
+    command:
+      - start-dev
 networks:
   keycloak-network:
     driver: bridge
