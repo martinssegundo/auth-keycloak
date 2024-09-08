@@ -26,23 +26,6 @@ class AuthApiTest {
     @InjectMocks
     AuthApi authApi;
 
-    private static ComposeContainer<?> composeContainer;
-
-    @BeforeAll
-    public static void setUp() {
-        composeContainer = new ComposeContainer<>(DockerImageName.parse("docker/compose:1.29.2"))
-                .withFileSystemBind("/path/to/your/docker-compose.yml", "/compose/docker-compose.yml")
-                .withExposedService("keycloak", 8080)
-                .withExposedService("postgres", 5432);
-        composeContainer.start();
-    }
-
-    @AfterAll
-    public static void tearDown() {
-        if (composeContainer != null) {
-            composeContainer.stop();
-        }
-    }
 
 
     @BeforeEach
