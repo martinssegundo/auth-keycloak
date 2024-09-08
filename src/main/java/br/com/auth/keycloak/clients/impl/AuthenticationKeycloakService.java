@@ -6,7 +6,7 @@ import br.com.auth.keycloak.clients.dtos.UserDTO;
 import br.com.auth.keycloak.clients.rest.KeycloakLoginClient;
 import br.com.auth.keycloak.clients.rest.KeycloakUserClient;
 import br.com.auth.keycloak.configs.KeycloakConfig;
-import br.com.auth.keycloak.domain.util.AuthenticationUtil;
+import br.com.auth.keycloak.domain.utils.AuthenticationUtil;
 import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
 import lombok.extern.slf4j.Slf4j;

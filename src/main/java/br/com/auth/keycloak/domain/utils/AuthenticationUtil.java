@@ -1,4 +1,4 @@
-package br.com.auth.keycloak.domain.util;
+package br.com.auth.keycloak.domain.utils;
 
 import jakarta.ws.rs.core.Form;
 
