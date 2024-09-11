@@ -1,14 +1,15 @@
 package br.com.auth.keycloak.configs;
 
-import jakarta.enterprise.context.ApplicationScoped;
-import lombok.Data;
-import org.eclipse.microprofile.config.inject.ConfigProperties;
+import io.smallrye.config.ConfigMapping;
+import io.smallrye.config.WithName;
 
-@ApplicationScoped
-@ConfigProperties(prefix = "keycloak")
-@Data
-public class KeycloakConfig {
+@ConfigMapping(prefix = "quarkus.keycloak.admin-client")
+public interface KeycloakConfig {
 
-    private String user;
-    private String password;
+    String url();
+    String realm();
+    @WithName("client-id")
+    String clientId();
+    @WithName("client-secret")
+    String clientSecret();
 }

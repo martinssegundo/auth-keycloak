@@ -1,21 +1,21 @@
 package br.com.auth.keycloak.configs;
 
 import br.com.auth.keycloak.clients.AuthenticationService;
-import br.com.auth.keycloak.domain.usecases.impl.CreateUserUseCaseKeycloak;
+import br.com.auth.keycloak.clients.UserManagerService;
+import br.com.auth.keycloak.domain.usecases.impl.CreateUserKeycloakUseCase;
 import br.com.auth.keycloak.mappers.UserMapper;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Produces;
-import jakarta.inject.Named;
 
 @ApplicationScoped
-public class CreateUserProducer {
+public class
+CreateUserProducer {
 
     @Produces
-    @ApplicationScoped
-    @Named("loginUseCaseKeycloak")
-    public CreateUserUseCaseKeycloak createUserUseCaseKeycloak(AuthenticationService authenticationService,
+    @QualifierCA("loginUseCaseKeycloak")
+    public CreateUserKeycloakUseCase createUserUseCaseKeycloak(UserManagerService userManagerService,
                                                                UserMapper userMapper){
-        return new CreateUserUseCaseKeycloak(authenticationService,userMapper);
+        return new CreateUserKeycloakUseCase(userManagerService,userMapper);
     }
 
 }

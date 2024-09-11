@@ -8,5 +8,4 @@ public interface AuthenticationService {
 
     Uni<AuthorisationClientDataDTO> login(String login, String password);
 
-    Uni<Void> createUser(UserDTO userDTO);
 }

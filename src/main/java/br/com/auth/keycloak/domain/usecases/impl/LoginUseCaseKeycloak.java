@@ -1,12 +1,14 @@
 package br.com.auth.keycloak.domain.usecases.impl;
 
 import br.com.auth.keycloak.clients.AuthenticationService;
+import br.com.auth.keycloak.configs.QualifierCA;
 import br.com.auth.keycloak.domain.entities.Authorization;
 import br.com.auth.keycloak.domain.entities.Login;
 import br.com.auth.keycloak.domain.usecases.LoginUseCase;
 import br.com.auth.keycloak.mappers.AuthenticationMapper;
 import io.smallrye.mutiny.Uni;
 
+@QualifierCA("loginUseCaseKeycloak")
 public class LoginUseCaseKeycloak implements LoginUseCase {
 
     private final AuthenticationService authenticationService;
@@ -21,6 +23,6 @@ public class LoginUseCaseKeycloak implements LoginUseCase {
     @Override
     public Uni<Authorization> login(Login login) {
         return authenticationService.login(login.getUser(),login.getPassword())
-                .map(authorisationDTO -> authenticationMapper.convertToAuthorization(authorisationDTO));
+                .map(authenticationMapper::convertToAuthorization);
     }
 }

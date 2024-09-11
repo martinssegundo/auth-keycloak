@@ -1,6 +1,7 @@
 package br.com.auth.keycloak.domain.entities.builds;
 
 import br.com.auth.keycloak.clients.dtos.CredentialDTO;
+import br.com.auth.keycloak.domain.entities.Credential;
 import br.com.auth.keycloak.domain.entities.User;
 
 import java.util.List;
@@ -12,7 +13,7 @@ public final class UserBuilder {
     private String firstName;
     private String lastName;
     private String email;
-    private List<CredentialDTO> credentials;
+    private List<Credential> credentials;
 
     private UserBuilder() {
     }
@@ -51,7 +52,7 @@ public final class UserBuilder {
         return this;
     }
 
-    public UserBuilder credentials(List<CredentialDTO> credentials) {
+    public UserBuilder credentials(List<Credential> credentials) {
         this.credentials = credentials;
         return this;
     }

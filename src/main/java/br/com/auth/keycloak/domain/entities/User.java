@@ -12,7 +12,7 @@ public class User {
     private String firstName;
     private String lastName;
     private String email;
-    private List<CredentialDTO> credentials;
+    private List<Credential> credentials;
 
     public String getUsername() {
         return username;
@@ -62,11 +62,11 @@ public class User {
         this.email = email;
     }
 
-    public List<CredentialDTO> getCredentials() {
+    public List<Credential> getCredentials() {
         return credentials;
     }
 
-    public void setCredentials(List<CredentialDTO> credentials) {
+    public void setCredentials(List<Credential> credentials) {
         this.credentials = credentials;
     }
 }
