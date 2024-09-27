@@ -15,5 +15,4 @@ public record AuthorisationDataDTO (
         @JsonProperty("not-before-policy") Long notBeforePolicy,
         @JsonProperty("session_state") String sessionState,
         @JsonProperty("scope") String scope
-) {
-}
+) { }

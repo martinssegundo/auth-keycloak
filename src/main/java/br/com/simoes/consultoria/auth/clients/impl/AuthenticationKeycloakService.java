@@ -2,6 +2,7 @@ package br.com.simoes.consultoria.auth.clients.impl;
 
 import br.com.simoes.consultoria.auth.clients.AuthenticationService;
 import br.com.simoes.consultoria.auth.clients.dtos.AuthorisationClientDataDTO;
+import br.com.simoes.consultoria.auth.clients.exception.Authenticationxception;
 import br.com.simoes.consultoria.auth.clients.rest.KeycloakLoginClient;
 import br.com.simoes.consultoria.auth.clients.rest.KeycloakUserClient;
 import br.com.simoes.consultoria.auth.configs.KeycloakConfig;
@@ -37,6 +38,13 @@ public class AuthenticationKeycloakService implements AuthenticationService {
         log.debug("Start login with keycloak");
         return keycloakLoginClient.login(
                 AuthenticationUtil.buildBasic(login, password),
-                AuthenticationUtil.buildForm(GRANT_TYPE, login, password));
+                AuthenticationUtil.buildForm(GRANT_TYPE, login, password))
+                .onFailure()
+                .invoke(error -> {
+                    log.error("Error during Keycloak login: " + error.getLocalizedMessage());
+                })
+                .onFailure().recoverWithUni(throwable -> {
+                    return Uni.createFrom().failure(throwable);
+                });
     }
 }

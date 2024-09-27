@@ -16,6 +16,8 @@ public class AuthenticationUtil {
         form.param("grant_type", grantType);
         form.param("username", user);
         form.param("password", password);
+        form.param("client_id", "auth-quarkus");
+        form.param("client_secret", "gOIEQnJuSCwp6amM9jK04Ml7XGznxUVx");
         return form;
     }
 }
