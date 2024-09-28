@@ -3,7 +3,7 @@ package br.com.simoes.consultoria.auth.clients.impl;
 
 import br.com.simoes.consultoria.auth.clients.UserManagerService;
 import br.com.simoes.consultoria.auth.clients.dtos.UserDTO;
-import br.com.simoes.consultoria.auth.clients.exception.UserCreationExeption;
+import br.com.simoes.consultoria.auth.clients.exception.UserCreationException;
 import br.com.simoes.consultoria.auth.configs.KeycloakConfig;
 import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -30,13 +30,15 @@ public class UserManagerKeyCloakService implements UserManagerService {
             return Uni.createFrom().voidItem();
         else
             return Uni.createFrom()
-                    .failure(() -> new UserCreationExeption("Error to create user", response.getStatus()));
+                    .failure(() -> new UserCreationException("Error to create user", response.getStatus()));
     }
 
 
     private UserRepresentation buildNewUser(UserDTO userDTO) {
         var user = new UserRepresentation();
         user.setUsername(userDTO.username());
+        user.setEnabled(true);
+        user.setEmailVerified(false);
         user.setEmail(userDTO.email());
         user.setFirstName(userDTO.firstName());
         user.setLastName(userDTO.lastName());

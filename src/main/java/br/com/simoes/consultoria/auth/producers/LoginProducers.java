@@ -1,6 +1,7 @@
-package br.com.simoes.consultoria.auth.configs;
+package br.com.simoes.consultoria.auth.producers;
 
 import br.com.simoes.consultoria.auth.clients.AuthenticationService;
+import br.com.simoes.consultoria.auth.configs.QualifierCA;
 import br.com.simoes.consultoria.auth.domain.usecases.impl.LoginUseCaseKeycloak;
 import br.com.simoes.consultoria.auth.mappers.AuthenticationMapper;
 import jakarta.enterprise.context.ApplicationScoped;

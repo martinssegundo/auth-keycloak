@@ -14,6 +14,21 @@ public class Authorization {
     private String sessionState;
     private String scope;
 
+    public Authorization(){}
+
+    public Authorization(String accessToken, Long expiresIn, Long refreshExpiresIn,
+                         String refreshToken, String tokenType, Long notBeforePolicy,
+                         String sessionState, String scope) {
+        this.accessToken = accessToken;
+        this.expiresIn = expiresIn;
+        this.refreshExpiresIn = refreshExpiresIn;
+        this.refreshToken = refreshToken;
+        this.tokenType = tokenType;
+        this.notBeforePolicy = notBeforePolicy;
+        this.sessionState = sessionState;
+        this.scope = scope;
+    }
+
     public static AuthorizationBuilder builder() {
         return AuthorizationBuilder.getInstance();
     }

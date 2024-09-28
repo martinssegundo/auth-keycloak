@@ -40,7 +40,7 @@ public class AuthApi {
     @Path("/login")
     @PermitAll
     public Uni<Response> login(LoginDataDTO loginDataDTO) {
-        log.info("Start login from =====> {}", loginDataDTO.user());
+        log.info("AuthApi.login() Start login process from =====> {}", loginDataDTO.user());
         return loginUseCase
                 .login(
                         authenticationMapper.convertToLogin(loginDataDTO)

@@ -6,8 +6,10 @@ import br.com.simoes.consultoria.auth.domain.entities.Authorization;
 import br.com.simoes.consultoria.auth.domain.entities.Login;
 import br.com.simoes.consultoria.auth.mappers.AuthenticationMapper;
 import br.com.simoes.consultoria.auth.util.AuthenticationUtil;
+import io.quarkus.test.junit.QuarkusTest;
 import io.smallrye.mutiny.Uni;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -18,7 +20,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 
-//@QuarkusTest
+@QuarkusTest
 class LoginUseCaseKeycloakTest {
     @Mock
     AuthenticationService authenticationService;
@@ -32,7 +34,7 @@ class LoginUseCaseKeycloakTest {
         loginUseCaseKeycloak = new LoginUseCaseKeycloak(authenticationService, authenticationMapper);
     }
 
-    //@Test
+    @Test
     void testLogin() throws IOException {
         var dataDTO = AuthenticationUtil.getAuthentication();
         var dataAuth = buildAuthorization(dataDTO);

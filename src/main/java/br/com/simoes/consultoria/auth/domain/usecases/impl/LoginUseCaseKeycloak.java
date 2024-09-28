@@ -7,8 +7,10 @@ import br.com.simoes.consultoria.auth.domain.entities.Login;
 import br.com.simoes.consultoria.auth.domain.usecases.LoginUseCase;
 import br.com.simoes.consultoria.auth.mappers.AuthenticationMapper;
 import io.smallrye.mutiny.Uni;
+import lombok.extern.slf4j.Slf4j;
 
 @QualifierCA("loginUseCaseKeycloak")
+@Slf4j
 public class LoginUseCaseKeycloak implements LoginUseCase {
 
     private final AuthenticationService authenticationService;
@@ -23,6 +25,10 @@ public class LoginUseCaseKeycloak implements LoginUseCase {
     @Override
     public Uni<Authorization> login(Login login) {
         return authenticationService.login(login.getUser(),login.getPassword())
+                .invoke(() -> log.info(
+                        "LoginUseCaseKeycloak.login() Start keycloak login process from {}",
+                        login.getUser()
+                        ))
                 .map(authenticationMapper::convertToAuthorization);
     }
 }

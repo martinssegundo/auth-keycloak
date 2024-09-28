@@ -3,11 +3,10 @@ package br.com.simoes.consultoria.auth.clients.exception;
 import lombok.Data;
 
 @Data
-public class UserCreationExeption extends RuntimeException {
+public class DefaultException extends RuntimeException {
     private int httpStatus;
-    private String message;
 
-    public UserCreationExeption(String message, int httpStatus) {
+    public DefaultException(String message, int httpStatus) {
         super(message);
         this.httpStatus = httpStatus;
     }

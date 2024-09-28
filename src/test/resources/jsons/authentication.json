@@ -1,10 +1,13 @@
 {
-  "access_token": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJaXzg2UlhKV0ptMmlkVW5rMUg4WkVXQU1zNm4tZ3c5ZTFoVzk2X25OOVFrIn0.eyJleHAiOjE2OTQyMjc3MjUsImlhdCI6MTY5NDIyNzQyNSwianRpIjoiMzgyYmRlMDQtZTk5My00Mzg2LThhMzctM2ZmODkyNDk2ZDA5IiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDkwL2F1dGgvcmVhbG1zL3F1YXJrdXMiLCJhdWQiOiJhY2NvdW50Iiwic3ViIjoiMTZkMTQ1NGQtNTI5MS00YjQzLTg5ZDUtNmYwMWM1YzFmZmU1IiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiYmFja2VuZC1zZXJ2aWNlIiwic2Vzc2lvbl9zdGF0ZSI6IjJhMmUxZjQ2LWMwMmEtNDcxOS04MWUyLTg0ODNhZGQ0YWI4MiIsImFjciI6IjEiLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsib2ZmbGluZV9hY2Nlc3MiLCJkZWZhdWx0LXJvbGVzLXF1YXJrdXMiLCJ1bWFfYXV0aG9yaXphdGlvbiIsInVzZXIiXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6ImVtYWlsIHByb2ZpbGUiLCJzaWQiOiIyYTJlMWY0Ni1jMDJhLTQ3MTktODFlMi04NDgzYWRkNGFiODIiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsInByZWZlcnJlZF91c2VybmFtZSI6InNpbW9lc3NlZ3VuZG8ifQ.jdATbPv3VEuW2qQz-QfYFxOSkQ7b2mh8mIeFiE_dGu0b4FqgRAFShw5vZ8PIvLlISeSHnI1Ao30J3z-OxLm_b84Ljtv1EhfjdsNSuC4z_JZyNAcnSGKXliC_B42aBQ_ROz52O4gSFUPks_5tqPhTiPWr7JF44J-hRX_UdEX2WSL5Nci1-By-BhA98pstj7PmF8Aopsfj1pJOFiqgw3LzgIddGsumvsmRlCqtLsj6PRpizUijFbBz5Ntv4HNxZhE-iAXRTyv-CoS7QnaiL0y8vmJbh2LatbdMxRy80cpMGBIGNKxvaza_5oo431t4vcezZTLRKlFnaoedeuJXtiYs-Q",
-  "expires_in": 300,
-  "refresh_expires_in": 1800,
-  "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICI2Yjk3Y2NhNC1mM2QyLTQxZjYtYTIyNS1iYTg0NjA5MGRmMTEifQ.eyJleHAiOjE2OTQyMjkyMjUsImlhdCI6MTY5NDIyNzQyNSwianRpIjoiNGY1ZjJmNTEtNTI3ZC00M2YwLWIyZjgtYWQ5NGQwNDQyZGMxIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDkwL2F1dGgvcmVhbG1zL3F1YXJrdXMiLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjgwOTAvYXV0aC9yZWFsbXMvcXVhcmt1cyIsInN1YiI6IjE2ZDE0NTRkLTUyOTEtNGI0My04OWQ1LTZmMDFjNWMxZmZlNSIsInR5cCI6IlJlZnJlc2giLCJhenAiOiJiYWNrZW5kLXNlcnZpY2UiLCJzZXNzaW9uX3N0YXRlIjoiMmEyZTFmNDYtYzAyYS00NzE5LTgxZTItODQ4M2FkZDRhYjgyIiwic2NvcGUiOiJlbWFpbCBwcm9maWxlIiwic2lkIjoiMmEyZTFmNDYtYzAyYS00NzE5LTgxZTItODQ4M2FkZDRhYjgyIn0.juuD-2vIix8igAuHPhHLWNkDzjYfwKy6DwoWs5Jwy3o",
-  "token_type": "Bearer",
-  "not-before-policy": 0,
-  "session_state": "2a2e1f46-c02a-4719-81e2-8483add4ab82",
-  "scope": "email profile"
+  "realm": "construction",
+  "enabled": true,
+  "clients": [
+    {
+      "clientId": "auth-quarkus",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "secret": "123456",
+      "redirectUris": ["http://localhost:8080/*"]
+    }
+  ]
 }

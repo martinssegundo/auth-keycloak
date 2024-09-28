@@ -2,7 +2,6 @@ package br.com.simoes.consultoria.auth.clients.impl;
 
 import br.com.simoes.consultoria.auth.clients.AuthenticationService;
 import br.com.simoes.consultoria.auth.clients.dtos.AuthorisationClientDataDTO;
-import br.com.simoes.consultoria.auth.clients.exception.Authenticationxception;
 import br.com.simoes.consultoria.auth.clients.rest.KeycloakLoginClient;
 import br.com.simoes.consultoria.auth.clients.rest.KeycloakUserClient;
 import br.com.simoes.consultoria.auth.configs.KeycloakConfig;
