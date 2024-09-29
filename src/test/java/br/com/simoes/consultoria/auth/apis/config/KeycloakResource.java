@@ -7,11 +7,11 @@ import java.util.Map;
 
 public class KeycloakResource implements QuarkusTestResourceLifecycleManager {
 
-    KeycloakContainer keycloak;
+    public static KeycloakContainer keycloak;
 
     @Override
     public Map<String, String> start() {
-        KeycloakContainer keycloak = new KeycloakContainer()
+        keycloak = new KeycloakContainer()
                 .withRealmImportFile("/jsons/authentication.json");
         keycloak.start();
 
@@ -20,9 +20,24 @@ public class KeycloakResource implements QuarkusTestResourceLifecycleManager {
         System.setProperty("quarkus.keycloak.admin-client.server-url", keycloak.getAuthServerUrl() + "/realms/construction");
         System.setProperty("quarkus.oidc.auth-server-url", keycloak.getAuthServerUrl() + "/realms/construction");
 
+
+        return Map.copyOf(buildKeyCloakProperties());
+    }
+
+
+    private Map<String, String> buildKeyCloakProperties(){
+
+
         return Map.of(
-                "quarkus.oidc.auth-server-url", keycloak.getAuthServerUrl() + "realms/quarkus",
-                "quarkus.oidc.credentials.secret", "mZLnOSxiF4nC46utkA4S1F3K3jIDIoaL"
+                "quarkus.keycloak.admin-client.client-id",  "auth-quarkus",
+                "quarkus.keycloak.admin-client.client-secret", "mZLnOSxiF4nC46utkA4S1F3K3jIDIoaL",
+                "quarkus.oidc.client-id",  "auth-quarkus",
+                "quarkus.oidc.credentials.secret", "mZLnOSxiF4nC46utkA4S1F3K3jIDIoaL",
+
+                "quarkus.keycloak.admin-client.url", keycloak.getAuthServerUrl(),
+                "keycloak-login-api/mp-rest/url", keycloak.getAuthServerUrl() + "/realms/construction/protocol/openid-connect",
+                "quarkus.keycloak.admin-client.server-url", keycloak.getAuthServerUrl() + "/realms/construction",
+                "quarkus.oidc.auth-server-url", keycloak.getAuthServerUrl() + "/realms/construction"
         );
     }
 
