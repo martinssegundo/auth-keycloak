@@ -11,13 +11,17 @@ public class AuthenticationUtil {
         return Base64.getEncoder().encodeToString(toEncrip.getBytes());
     }
 
-    public static Form buildForm(String grantType, String user, String password){
+    public static Form buildForm(String grantType,
+                                 String user,
+                                 String password,
+                                 String clientId,
+                                 String clientSecret){
         Form form = new Form();
         form.param("grant_type", grantType);
         form.param("username", user);
         form.param("password", password);
-        form.param("client_id", "auth-quarkus");
-        form.param("client_secret", "gOIEQnJuSCwp6amM9jK04Ml7XGznxUVx");
+        form.param("client_id", clientId);
+        form.param("client_secret", clientSecret);
         return form;
     }
 }

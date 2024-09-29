@@ -6,7 +6,6 @@ import io.smallrye.config.WithName;
 @ConfigMapping(prefix = "quarkus.keycloak.admin-client")
 public interface KeycloakConfig {
 
-    String url();
     String realm();
     @WithName("client-id")
     String clientId();
