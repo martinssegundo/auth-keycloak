@@ -39,12 +39,11 @@ class AuthApiTest {
         postgres.start();
         keycloak.start();
         // Configs Keycloak
+        System.setProperty("quarkus.keycloak.admin-client.url", keycloak.getAuthServerUrl());
         System.setProperty("keycloak-login-api/mp-rest/url", keycloak.getAuthServerUrl() + "/realms/construction/protocol/openid-connect");
         System.setProperty("quarkus.keycloak.admin-client.server-url", keycloak.getAuthServerUrl() + "/realms/construction");
         System.setProperty("quarkus.oidc.auth-server-url", keycloak.getAuthServerUrl() + "/realms/construction");
-        System.setProperty("quarkus.keycloak.admin-client.client-id", "auth-quarkus");
-        System.setProperty("quarkus.keycloak.admin-client.client-secret", "123456");
-        System.setProperty("quarkus.oidc.application-type", "web-app");
+
 
         //Configs database
         System.setProperty("quarkus.datasource.jdbc.url", postgres.getJdbcUrl());
@@ -66,14 +65,7 @@ class AuthApiTest {
 
     @Test
     void testLogin() throws IOException {
-        LoginDataDTO loginDataDTO = new LoginDataDTO("luiz", null);
-
-        System.out.println("============================="+keycloak.getKeycloakAdminClient()
-                .realm("construction")
-                .users()
-                .create(buildNewUser())
-                .getStatus());
-
+        LoginDataDTO loginDataDTO = new LoginDataDTO("luiz", "123456");
 
         given()
                 .contentType("application/json")

@@ -6,8 +6,23 @@
       "clientId": "auth-quarkus",
       "enabled": true,
       "protocol": "openid-connect",
-      "secret": "123456",
-      "redirectUris": ["http://localhost:8080/*"]
+      "secret": "gOIEQnJuSCwp6amM9jK04Ml7XGznxUVx",
+      "redirectUris": ["http://localhost:8080/*"],
+      "directAccessGrantsEnabled": true,
+      "publicClient": false
+    }
+  ],
+  "users": [
+    {
+      "username": "luiz",
+      "enabled": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "123456",
+          "temporary": false
+        }
+      ]
     }
   ]
 }

@@ -12,17 +12,8 @@ import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.Response;
 import lombok.extern.slf4j.Slf4j;
-import org.eclipse.microprofile.openapi.annotations.enums.SecuritySchemeType;
-import org.eclipse.microprofile.openapi.annotations.security.OAuthFlow;
-import org.eclipse.microprofile.openapi.annotations.security.OAuthFlows;
-import org.eclipse.microprofile.openapi.annotations.security.SecurityScheme;
 
 @Path("/auth")
-@SecurityScheme(
-        securitySchemeName = "auth-quarkus",
-        type = SecuritySchemeType.OAUTH2,
-        flows = @OAuthFlows(password = @OAuthFlow(tokenUrl = "http://localhost:8090/realms/construction/protocol/openid-connect/token"))
-)
 @Slf4j
 public class AuthApi {
 
