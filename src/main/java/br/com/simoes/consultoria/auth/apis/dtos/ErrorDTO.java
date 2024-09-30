@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 @Builder
 public record ErrorDTO (
         Integer status,
-        String Message,
+        String message,
         LocalDateTime dateTimeError
 ) {
 }

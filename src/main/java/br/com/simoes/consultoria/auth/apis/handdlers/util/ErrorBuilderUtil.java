@@ -11,7 +11,7 @@ public class ErrorBuilderUtil {
     public static ErrorDTO buildError(Integer code, String message){
         return ErrorDTO.builder()
                 .dateTimeError(LocalDateTime.now())
-                .Message(message)
+                .message(message)
                 .status(code)
                 .build();
     }

@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.util.Collections;
 
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.containsString;
 
 @QuarkusTest
 @QuarkusTestResource(KeycloakResource.class)
@@ -30,57 +31,13 @@ class AuthApiTest {
     AuthApi authApi;
 
 
-    /*static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:latest")
-            .withDatabaseName("testdb")
-            .withUsername("testuser")
-            .withPassword("testpass");
-
-
-    static KeycloakContainer keycloak = new KeycloakContainer()
-            .withRealmImportFile("/jsons/authentication.json");
-
-    @BeforeAll
-    public static void setup() {
-        postgres.start();
-        keycloak.start();
-        // Configs Keycloak
-        System.setProperty("quarkus.keycloak.admin-client.url", keycloak.getAuthServerUrl());
-        System.setProperty("keycloak-login-api/mp-rest/url", keycloak.getAuthServerUrl() + "/realms/construction/protocol/openid-connect");
-        System.setProperty("quarkus.keycloak.admin-client.server-url", keycloak.getAuthServerUrl() + "/realms/construction");
-        System.setProperty("quarkus.oidc.auth-server-url", keycloak.getAuthServerUrl() + "/realms/construction");
-
-        var cliente = keycloak.getKeycloakAdminClient()
-                .realm("construction")
-                .clients()
-                .findByClientId("auth-quarkus")
-                .stream().findFirst().get();
-
-        System.setProperty("quarkus.keycloak.admin-client.client-id",  cliente.getClientId());
-        System.setProperty("quarkus.keycloak.admin-client.client-secret", cliente.getSecret());
-        System.setProperty("quarkus.oidc.client-id",  cliente.getClientId());
-        System.setProperty("quarkus.oidc.credentials.secret", cliente.getSecret());
-
-
-        //Configs database
-        System.setProperty("quarkus.datasource.jdbc.url", postgres.getJdbcUrl());
-        System.setProperty("quarkus.datasource.username", postgres.getUsername());
-        System.setProperty("quarkus.datasource.password", postgres.getPassword());
-    }
-
-    @AfterAll
-    public static void shutdown() {
-        postgres.stop();
-        keycloak.stop();
-    }*/
-
-
     @BeforeEach
     void setUpEach() {
         MockitoAnnotations.openMocks(this);
     }
 
     @Test
-    void testLogin() throws IOException {
+    void loginSucess() throws IOException {
         LoginDataDTO loginDataDTO = new LoginDataDTO("luiz", "123456");
 
         given()
@@ -90,6 +47,22 @@ class AuthApiTest {
                 .post("/auth/login")
                 .then()
                 .statusCode(200);
+
+    }
+
+
+    @Test
+    void loginFail() throws IOException {
+        LoginDataDTO loginDataDTO = new LoginDataDTO("luiz", "1234567");
+
+        given()
+                .contentType("application/json")
+                .body(loginDataDTO)
+                .when()
+                .post("/auth/login")
+                .then()
+                .statusCode(401)
+                .body("message", containsString("401"));
 
     }
 

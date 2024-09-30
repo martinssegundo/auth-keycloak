@@ -2,6 +2,7 @@ package br.com.simoes.consultoria.auth.clients.impl;
 
 import br.com.simoes.consultoria.auth.clients.AuthenticationService;
 import br.com.simoes.consultoria.auth.clients.dtos.AuthorisationClientDataDTO;
+import br.com.simoes.consultoria.auth.clients.exception.AuthenticationException;
 import br.com.simoes.consultoria.auth.clients.rest.KeycloakLoginClient;
 import br.com.simoes.consultoria.auth.clients.rest.KeycloakUserClient;
 import br.com.simoes.consultoria.auth.configs.KeycloakConfig;
@@ -9,8 +10,10 @@ import br.com.simoes.consultoria.auth.domain.utils.AuthenticationUtil;
 import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.ws.rs.core.Response;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
+import org.jboss.resteasy.reactive.ClientWebApplicationException;
 
 @ApplicationScoped
 @Slf4j
@@ -35,7 +38,7 @@ public class AuthenticationKeycloakService implements AuthenticationService {
 
     @Override
     public Uni<AuthorisationClientDataDTO> login(String login, String password) {
-        log.info("Start login with keycloak");
+        log.info("AuthenticationKeycloakService.login() =========> Start keycloak login");
         return keycloakLoginClient.login(
                         AuthenticationUtil.buildBasic(login, password),
                         AuthenticationUtil.buildForm(
@@ -47,11 +50,33 @@ public class AuthenticationKeycloakService implements AuthenticationService {
                         )
                 )
                 .onFailure()
-                .invoke(error -> {
-                    log.error("Error during Keycloak login: " + error.getLocalizedMessage());
-                })
-                .onFailure().recoverWithUni(throwable -> {
-                    return Uni.createFrom().failure(throwable);
+                .transform(error -> {
+                    if (error instanceof ClientWebApplicationException) {
+                        return errorBuilder((ClientWebApplicationException) error, login);
+                    }
+                    return error;
                 });
+    }
+
+    private AuthenticationException errorBuilder(ClientWebApplicationException error, String login){
+        var response = error.getResponse();
+        var messageError = buildErrorMessage(
+                login,
+                response,
+                error.getLocalizedMessage()
+        );
+        log.error(messageError);
+        return new AuthenticationException(response.getStatus(), messageError);
+    }
+
+
+    public String buildErrorMessage(String login,Response response, String localizedMessage){
+        return String.format("AuthenticationKeycloakService.login() ==============> " +
+                        "Status: %d " +
+                        "message: %s " +
+                        "Login: %s",
+                response.getStatus(),
+                localizedMessage,
+                login);
     }
 }
