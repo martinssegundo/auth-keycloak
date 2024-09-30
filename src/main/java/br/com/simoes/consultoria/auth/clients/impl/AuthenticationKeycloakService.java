@@ -15,6 +15,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.jboss.resteasy.reactive.ClientWebApplicationException;
 
+import static br.com.simoes.consultoria.auth.clients.util.ExceptionUtil.buildErrorMessage;
+
 @ApplicationScoped
 @Slf4j
 public class AuthenticationKeycloakService implements AuthenticationService {
@@ -61,6 +63,7 @@ public class AuthenticationKeycloakService implements AuthenticationService {
     private AuthenticationException errorBuilder(ClientWebApplicationException error, String login){
         var response = error.getResponse();
         var messageError = buildErrorMessage(
+                "AuthenticationKeycloakService.login()",
                 login,
                 response,
                 error.getLocalizedMessage()
@@ -70,13 +73,5 @@ public class AuthenticationKeycloakService implements AuthenticationService {
     }
 
 
-    public String buildErrorMessage(String login,Response response, String localizedMessage){
-        return String.format("AuthenticationKeycloakService.login() ==============> " +
-                        "Status: %d " +
-                        "message: %s " +
-                        "Login: %s",
-                response.getStatus(),
-                localizedMessage,
-                login);
-    }
+
 }
