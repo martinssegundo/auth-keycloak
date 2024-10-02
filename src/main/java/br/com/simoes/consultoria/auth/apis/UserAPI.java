@@ -42,6 +42,7 @@ public class UserAPI {
     public Uni<Response> createUser(UserCreateDTO dto){
         logRequestIdentifier(dto);
         return createUserUseCase.createUser(userMapper.converToUser(dto))
+                .invoke(() -> log.info("User {} crated", dto.username()))
                 .map(item -> Response.status(201).build());
     }
 
