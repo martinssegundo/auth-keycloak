@@ -9,7 +9,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.Header;
-import io.restassured.http.Headers;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.MediaType;
 import lombok.extern.slf4j.Slf4j;
@@ -33,7 +32,7 @@ class UserAPITest {
     }
 
     @Test
-    void testCreateUser() throws JsonProcessingException {
+    void testCreateUserSucess() throws JsonProcessingException {
         given()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(buildUserCreteDTO(
@@ -42,13 +41,33 @@ class UserAPITest {
                         "Segundo",
                         "luiz.segundo@email.com"
                 ))
-                .header(new Header("Authorization", token()))
+                .header(new Header("Authorization", token("luiz", "123456")))
                 .when()
                 .post("/user")
                 .then()
-                .statusCode(200);
-
+                .statusCode(201);
     }
+
+
+
+    @Test
+    void testCreateUserErroSameUser() throws JsonProcessingException {
+        given()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(buildUserCreteDTO(
+                        "luiz.segundo",
+                        "Luiz",
+                        "Segundo",
+                        "luiz.segundo@email.com"
+                ))
+                .header(new Header("Authorization", token("maria", "mariaPassword123")))
+                .when()
+                .post("/user")
+                .then()
+                .statusCode(500);
+    }
+
+
 
     private UserCreateDTO buildUserCreteDTO(String username,
                                             String firstName,
@@ -63,8 +82,8 @@ class UserAPITest {
     }
 
 
-    private String token() throws JsonProcessingException {
-        var loginDataDTO = new LoginDataDTO("luiz", "123456");
+    private String token(String user, String password) throws JsonProcessingException {
+        var loginDataDTO = new LoginDataDTO(user, password);
 
         var response = given()
                 .contentType("application/json")

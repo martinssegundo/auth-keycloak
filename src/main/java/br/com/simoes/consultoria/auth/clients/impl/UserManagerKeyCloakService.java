@@ -7,13 +7,17 @@ import br.com.simoes.consultoria.auth.clients.exception.AuthenticationException;
 import br.com.simoes.consultoria.auth.clients.exception.UserCreationException;
 import br.com.simoes.consultoria.auth.configs.KeycloakConfig;
 import io.netty.handler.codec.http.HttpResponseStatus;
+import io.quarkus.keycloak.admin.client.common.KeycloakAdminClientConfig;
 import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import jakarta.ws.rs.core.Response;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jboss.resteasy.reactive.ClientWebApplicationException;
 import org.keycloak.admin.client.Keycloak;
+import org.keycloak.admin.client.KeycloakBuilder;
+import org.keycloak.admin.client.resource.UsersResource;
 import org.keycloak.representations.idm.UserRepresentation;
 
 import java.util.List;
@@ -22,22 +26,24 @@ import java.util.concurrent.CompletableFuture;
 import static br.com.simoes.consultoria.auth.clients.util.ExceptionUtil.buildErrorMessage;
 
 @ApplicationScoped
-@RequiredArgsConstructor
 @Slf4j
 public class UserManagerKeyCloakService implements UserManagerService {
 
     private final Keycloak keycloak;
     private final KeycloakConfig keycloakConfig;
 
+    @Inject
+    public UserManagerKeyCloakService(KeycloakConfig keycloakConfig) {
+        this.keycloakConfig = keycloakConfig;
+        this.keycloak = buildKeycloak();
+    }
+
     @Override
     public Uni<Void> createUser(UserDTO userDTO) {
-        log.info("============================");
         return Uni.createFrom().completionStage(() -> {
-                    Response response = keycloak.realm(keycloakConfig.realm())
-                            .users()
-                            .create(buildNewUser(userDTO));
+                    Response response = keycloak.realm(keycloakConfig.realm()).users().create(buildNewUser(userDTO));
                     if (response.getStatus() == 201) {
-                        return CompletableFuture.completedFuture(null); // Sucesso
+                        return CompletableFuture.completedFuture(null);
                     } else {
                         return CompletableFuture.failedFuture(
                                 new UserCreationException(buildErrorMessage(
@@ -83,5 +89,24 @@ public class UserManagerKeyCloakService implements UserManagerService {
                 .executeActionsEmail(List.of("UPDATE_PASSWORD"));
         return Uni.createFrom()
                 .voidItem();
+    }
+
+    private UsersResource getKeycloakUsers(){
+        var realm = keycloak.realm(keycloakConfig.realm());
+
+        return realm.users();
+    }
+
+    private Keycloak buildKeycloak(){
+
+        return KeycloakBuilder.builder()
+                .realm(keycloakConfig.realm())
+                .serverUrl(keycloakConfig.url())
+                .username(keycloakConfig.user())
+                .password(keycloakConfig.password())
+                .clientId(keycloakConfig.clientId())
+                .clientId(keycloakConfig.clientId())
+                .clientSecret(keycloakConfig.clientSecret())
+                .build();
     }
 }

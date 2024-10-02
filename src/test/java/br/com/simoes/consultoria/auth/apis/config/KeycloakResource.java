@@ -15,6 +15,9 @@ public class KeycloakResource implements QuarkusTestResourceLifecycleManager {
                 .withRealmImportFile("/jsons/authentication.json");
         keycloak.start();
 
+        System.setProperty("quarkus.keycloak.admin-client.admin-user", "luiz");
+        System.setProperty("quarkus.keycloak.admin-client.admin-password", "123456");
+        System.setProperty("quarkus.keycloak.admin-client.realm", "construction");
         System.setProperty("quarkus.keycloak.admin-client.url", keycloak.getAuthServerUrl());
         System.setProperty("keycloak-login-api/mp-rest/url", keycloak.getAuthServerUrl() + "/realms/construction/protocol/openid-connect");
         System.setProperty("quarkus.keycloak.admin-client.server-url", keycloak.getAuthServerUrl() + "/realms/construction");

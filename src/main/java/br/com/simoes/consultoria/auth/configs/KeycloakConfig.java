@@ -11,4 +11,10 @@ public interface KeycloakConfig {
     String clientId();
     @WithName("client-secret")
     String clientSecret();
+    @WithName("url")
+    String url();
+    @WithName("admin-user")
+    String user();
+    @WithName("admin-password")
+    String password();
 }

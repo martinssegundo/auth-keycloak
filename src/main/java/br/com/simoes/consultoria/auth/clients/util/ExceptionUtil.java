@@ -5,7 +5,7 @@ import jakarta.ws.rs.core.Response;
 public class ExceptionUtil {
 
     public static String buildErrorMessage(String method, String login, Response response, String localizedMessage){
-        return String.format("{} ==============> " +
+        return String.format("Error when doing %s " +
                         "Status: %d " +
                         "message: %s " +
                         "User: %s",
@@ -17,7 +17,7 @@ public class ExceptionUtil {
 
 
     public static String buildErrorMessage(String method, String login, String localizedMessage){
-        return String.format("{} ==============> " +
+        return String.format("Error when doing %s " +
                         "message: %s " +
                         "User: %s",
                 method,
