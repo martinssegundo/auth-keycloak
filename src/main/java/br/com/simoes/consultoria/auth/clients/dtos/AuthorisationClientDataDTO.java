@@ -1,28 +1,27 @@
 package br.com.simoes.consultoria.auth.clients.dtos;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.Builder;
 
-@Data
-@RequiredArgsConstructor
-public class AuthorisationClientDataDTO {
-
-    @JsonProperty("access_token")
-    private String accessToken;
-    @JsonProperty("expires_in")
-    private Long expiresIn;
-    @JsonProperty("refresh_expires_in")
-    private Long refreshExpiresIn;
-    @JsonProperty("refresh_token")
-    private String refreshToken;
-    @JsonProperty("token_type")
-    private String tokenType;
-    @JsonProperty("not-before-policy")
-    private Long notBeforePolicy;
-    @JsonProperty("session_state")
-    private String sessionState;
-    @JsonProperty("scope")
-    private String scope;
-
-}
+@Builder
+public record AuthorisationClientDataDTO(
+        @JsonProperty("access_token")
+        String accessToken,
+        @JsonProperty("expires_in")
+        Long expiresIn,
+        @JsonProperty("refresh_expires_in")
+        Long refreshExpiresIn,
+        @JsonProperty("refresh_token")
+        String refreshToken,
+        @JsonProperty("token_type")
+        String tokenType,
+        @JsonProperty("not-before-policy")
+        Long notBeforePolicy,
+        @JsonProperty("session_state")
+        String sessionState,
+        @JsonProperty("scope")
+        String scope,
+        @JsonIgnore
+        Long expiredTime
+) { }

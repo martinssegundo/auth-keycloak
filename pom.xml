@@ -21,6 +21,7 @@
         <skipITs>true</skipITs>
         <surefire-plugin.version>3.1.2</surefire-plugin.version>
         <test-container>1.20.0</test-container>
+        <test-container.keycloak>3.4.0</test-container.keycloak>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -108,7 +109,7 @@
         <dependency>
             <groupId>com.github.dasniko</groupId>
             <artifactId>testcontainers-keycloak</artifactId>
-            <version>3.4.0</version>
+            <version>${test-container.keycloak}</version>
             <scope>test</scope>
         </dependency>
 

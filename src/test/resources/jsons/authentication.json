@@ -24,7 +24,8 @@
         "admin-group"
       ],
       "realmRoles": [
-        "admin"
+        "admin",
+        "manager"
       ],
       "clientRoles": {
         "auth-quarkus": [

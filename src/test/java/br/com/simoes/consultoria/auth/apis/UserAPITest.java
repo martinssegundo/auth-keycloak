@@ -51,16 +51,30 @@ class UserAPITest {
 
 
     @Test
-    void testCreateUserErroSameUser() throws JsonProcessingException {
+    void testCreateUserErrorSameUser() throws JsonProcessingException {
         given()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(buildUserCreteDTO(
-                        "luiz.segundo",
+                        "luiz.segundo.new",
                         "Luiz",
                         "Segundo",
-                        "luiz.segundo@email.com"
+                        "luiz.segundo.novo@email.com"
                 ))
-                .header(new Header("Authorization", token("maria", "mariaPassword123")))
+                .header(new Header("Authorization", token("luiz", "123456")))
+                .when()
+                .post("/user")
+                .then()
+                .statusCode(201);
+
+        given()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(buildUserCreteDTO(
+                        "luiz.segundo.new",
+                        "Luiz",
+                        "Segundo",
+                        "luiz.segundo.novo@email.com"
+                ))
+                .header(new Header("Authorization", token("luiz", "123456")))
                 .when()
                 .post("/user")
                 .then()

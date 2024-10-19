@@ -49,14 +49,14 @@ class LoginUseCaseKeycloakTest {
 
     private Authorization buildAuthorization(AuthorisationClientDataDTO dataDTO){
         return Authorization.builder()
-                .accessToken(dataDTO.getAccessToken())
-                .notBeforePolicy(dataDTO.getNotBeforePolicy())
-                .refreshExpiresIn(dataDTO.getRefreshExpiresIn())
-                .refreshToken(dataDTO.getRefreshToken())
-                .scope(dataDTO.getScope())
-                .sessionState(dataDTO.getSessionState())
-                .expiresIn(dataDTO.getExpiresIn())
-                .tokenType(dataDTO.getTokenType())
+                .accessToken(dataDTO.accessToken())
+                .notBeforePolicy(dataDTO.notBeforePolicy())
+                .refreshExpiresIn(dataDTO.refreshExpiresIn())
+                .refreshToken(dataDTO.refreshToken())
+                .scope(dataDTO.scope())
+                .sessionState(dataDTO.sessionState())
+                .expiresIn(dataDTO.expiresIn())
+                .tokenType(dataDTO.tokenType())
                 .build();
     }
 }

@@ -39,8 +39,8 @@ public class KeycloakResource implements QuarkusTestResourceLifecycleManager {
 
                 "quarkus.keycloak.admin-client.url", keycloak.getAuthServerUrl(),
                 "keycloak-login-api/mp-rest/url", keycloak.getAuthServerUrl() + "/realms/construction/protocol/openid-connect",
-                "quarkus.keycloak.admin-client.server-url", keycloak.getAuthServerUrl() + "/realms/construction",
-                "quarkus.oidc.auth-server-url", keycloak.getAuthServerUrl() + "/realms/construction"
+                "quarkus.keycloak.admin-client.server-url", keycloak.getAuthServerUrl() + "/realms/quarkus-realm",
+                "quarkus.oidc.auth-server-url", keycloak.getAuthServerUrl() + "/realms/quarkus-realm"
         );
     }
 

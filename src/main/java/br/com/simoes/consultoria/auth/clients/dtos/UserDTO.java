@@ -2,13 +2,15 @@ package br.com.simoes.consultoria.auth.clients.dtos;
 
 import lombok.Builder;
 
+import java.util.List;
+
 
 @Builder
 public record UserDTO (
         String username,
-        boolean enabled,
-        boolean emailVerified,
         String firstName,
         String lastName,
-        String email
+        String email,
+        boolean enabled,
+        List<CredentialDTO> credentials
 ) { }

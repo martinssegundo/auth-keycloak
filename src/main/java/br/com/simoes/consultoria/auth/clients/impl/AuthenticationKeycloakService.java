@@ -25,16 +25,13 @@ public class AuthenticationKeycloakService implements AuthenticationService {
 
 
     private final KeycloakLoginClient keycloakLoginClient;
-    private final KeycloakUserClient keycloakUserClient;
 
     private final KeycloakConfig keycloakConfig;
 
     @Inject
     public AuthenticationKeycloakService(@RestClient final KeycloakLoginClient keycloakLoginClient,
-                                         @RestClient final KeycloakUserClient keycloakUserClient,
                                          final KeycloakConfig keycloakConfig) {
         this.keycloakLoginClient = keycloakLoginClient;
-        this.keycloakUserClient = keycloakUserClient;
         this.keycloakConfig = keycloakConfig;
     }
 
