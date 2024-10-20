@@ -5,8 +5,14 @@ import lombok.Builder;
 
 @Builder
 public record CredentialDTO (
+        String id,
         String type,
+        String userLabel,
+        Long createdDate,
+        String secretData,
+        String credentialData,
+        Integer priority,
         String value,
-        boolean temporary
+        Boolean temporary
 ) {
 }

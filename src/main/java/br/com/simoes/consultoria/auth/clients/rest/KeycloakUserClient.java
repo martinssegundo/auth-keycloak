@@ -8,6 +8,7 @@ import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
+import org.keycloak.representations.idm.UserRepresentation;
 
 @RegisterRestClient(configKey = "keycloak-user-api")
 @Path("/users")
@@ -15,7 +16,7 @@ public interface KeycloakUserClient {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    Uni<Response> createNewUser(@HeaderParam(HttpHeaders.AUTHORIZATION) String authorizationHeader, UserDTO userDTO);
+    Uni<Response> createNewUser(@HeaderParam(HttpHeaders.AUTHORIZATION) String authorizationHeader, UserDTO user);
 
     @PUT
     @Path("/{user-id}/execute-actions-email")
