@@ -7,7 +7,7 @@
   "refreshTokenMaxReuse": 0,
   "accessTokenLifespan": 300,
   "accessTokenLifespanForImplicitFlow": 900,
-  "ssoSessionIdleTimeout": 1800,
+  "ssoSessionIdleTimeout": 60,
   "ssoSessionMaxLifespan": 36000,
   "ssoSessionIdleTimeoutRememberMe": 0,
   "ssoSessionMaxLifespanRememberMe": 0,
@@ -49,6 +49,15 @@
         "id": "6429f9c5-207f-4337-9442-082c15c8ed2f",
         "name": "uma_authorization",
         "description": "${role_uma_authorization}",
+        "composite": false,
+        "clientRole": false,
+        "containerId": "40f9f7ed-3848-4967-af39-803183d889e0",
+        "attributes": {}
+      },
+      {
+        "id": "a7dec516-b12b-4347-a7fd-6cb7f2931eef",
+        "name": "manage-users",
+        "description": "User manager realm",
         "composite": false,
         "clientRole": false,
         "containerId": "40f9f7ed-3848-4967-af39-803183d889e0",
@@ -145,7 +154,12 @@
           "id": "18f3c5f8-daa5-4937-854b-609ffb1ef1de",
           "name": "manage-users",
           "description": "${role_manage-users}",
-          "composite": false,
+          "composite": true,
+          "composites": {
+            "realm": [
+              "manage-users"
+            ]
+          },
           "clientRole": true,
           "containerId": "0a1ec870-f6e2-4413-8e99-426a6ec7492e",
           "attributes": {}
@@ -329,6 +343,15 @@
           "clientRole": true,
           "containerId": "cc7c1061-25fe-40cc-bdfa-43d81a3c421a",
           "attributes": {}
+        },
+        {
+          "id": "c5935882-1625-4767-b171-3cf766593a59",
+          "name": "manage-users",
+          "description": "user manager cliente",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "cc7c1061-25fe-40cc-bdfa-43d81a3c421a",
+          "attributes": {}
         }
       ],
       "account": [
@@ -421,7 +444,23 @@
       ]
     }
   },
-  "groups": [],
+  "groups": [
+    {
+      "id": "efa2c808-1af4-4506-a425-4e454311407c",
+      "name": "user_manger_quarkus",
+      "path": "/user_manger_quarkus",
+      "attributes": {},
+      "realmRoles": [
+        "manage-users"
+      ],
+      "clientRoles": {
+        "realm-management": [
+          "manage-users"
+        ]
+      },
+      "subGroups": []
+    }
+  ],
   "defaultRole": {
     "id": "0e680922-f6c0-454b-956e-acedd072bd4b",
     "name": "default-roles-quarkus-realm",
@@ -483,6 +522,10 @@
         "default-roles-quarkus-realm"
       ],
       "clientRoles": {
+        "realm-management": [
+          "create-client",
+          "manage-users"
+        ],
         "auth-quarkus": [
           "uma_protection"
         ]
@@ -1454,7 +1497,20 @@
     "xXSSProtection": "1; mode=block",
     "strictTransportSecurity": "max-age=31536000; includeSubDomains"
   },
-  "smtpServer": {},
+  "smtpServer": {
+    "replyToDisplayName": "",
+    "starttls": "true",
+    "auth": "true",
+    "envelopeFrom": "",
+    "ssl": "true",
+    "password": "**********",
+    "port": "465",
+    "replyTo": "",
+    "host": "smtp.hostinger.com",
+    "from": "noreply@simoesconsultoriati.com",
+    "fromDisplayName": "Simões Consultoria",
+    "user": "noreply@simoesconsultoriati.com"
+  },
   "eventsEnabled": false,
   "eventsListeners": [
     "jboss-logging"
@@ -2319,7 +2375,11 @@
     "cibaAuthRequestedUserHint": "login_hint",
     "oauth2DeviceCodeLifespan": "600",
     "oauth2DevicePollingInterval": "5",
+    "clientOfflineSessionMaxLifespan": "0",
+    "clientSessionIdleTimeout": "0",
     "parRequestUriLifespan": "60",
+    "clientSessionMaxLifespan": "0",
+    "clientOfflineSessionIdleTimeout": "0",
     "cibaInterval": "5",
     "realmReusableOtpCode": "false"
   },

@@ -28,6 +28,7 @@ import org.keycloak.admin.client.resource.UsersResource;
 import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
 
+import java.awt.image.TileObserver;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -38,6 +39,10 @@ import static br.com.simoes.consultoria.auth.clients.util.ExceptionUtil.buildErr
 @ApplicationScoped
 @Slf4j
 public class UserManagerKeyCloakService implements UserManagerService {
+
+    private static final String[] ACTIONS = {"VERIFY_EMAIL", "UPDATE_PASSWORD"};
+    private static final String BEARER = "Bearer ";
+
 
     private final UserMagement userMagement;
     private final KeycloakUserClient keycloakUserClient;
@@ -57,10 +62,15 @@ public class UserManagerKeyCloakService implements UserManagerService {
     public Uni<Void> createUser(UserDTO userDTO) {
         return doLoginUserManger()
                 .flatMap(login -> keycloakUserClient.createNewUser(
-                        "Bearer " + login.accessToken(),
+                        BEARER + login.accessToken(),
                         userDTO
                 ))
                 .invoke(() -> log.info("User: {} Status: CREATED", userDTO.username()))
+                .flatMap(response -> {
+                    var location = response.getHeaderString("Location");
+                    var userid = location.substring(location.lastIndexOf('/') + 1);
+                    return sendActionsNewUser(userid);
+                })
                 .replaceWithVoid()
                 .onFailure()
                 .transform(error -> errorBuilder(
@@ -70,6 +80,19 @@ public class UserManagerKeyCloakService implements UserManagerService {
                         )
                 );
 
+    }
+
+    private Uni<Void> sendActionsNewUser(String userId){
+        return doLoginUserManger()
+                .flatMap(token -> keycloakUserClient.triggerUserActions(userId,BEARER+ token.accessToken(),ACTIONS))
+                .replaceWithVoid()
+                .onFailure()
+                .transform(error -> errorBuilder(
+                                error,
+                                userId,
+                                "UserManagerKeyCloakService.sendActionsNewUser()"
+                        )
+                );
     }
 
     private UserCreationException errorBuilder(Throwable error, String user, String method) {
@@ -87,9 +110,10 @@ public class UserManagerKeyCloakService implements UserManagerService {
         return UserDTO.builder()
                 .credentials(List.of(buildFirstCredential()))
                 .email(userDTO.email())
-                .enabled(userDTO.enabled())
                 .firstName(userDTO.firstName())
                 .lastName(userDTO.lastName())
+                .enabled(true)
+                .emailVerified(false)
                 .build();
     }
 
@@ -111,10 +135,11 @@ public class UserManagerKeyCloakService implements UserManagerService {
                                     userMagement.user(),
                                     "UserManagerKeyCloakService.doLoginUserManger()"
                             )
-                    );
+                    ).invoke(login -> log.info(login.accessToken()));
 
         return Uni.createFrom()
-                .item(authorisationClientDataDTO);
+                .item(authorisationClientDataDTO)
+                .invoke(login -> log.info(login.accessToken()));
     }
 
 }

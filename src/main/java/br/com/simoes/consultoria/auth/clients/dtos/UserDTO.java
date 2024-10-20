@@ -12,5 +12,6 @@ public record UserDTO (
         String lastName,
         String email,
         boolean enabled,
+        boolean emailVerified,
         List<CredentialDTO> credentials
 ) { }
