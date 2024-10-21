@@ -19,4 +19,8 @@ public interface KeycloakLoginClient {
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     Uni<AuthorisationClientDataDTO> login(@HeaderParam(HttpHeaders.AUTHORIZATION) String authorizationHeader,
                                           Form authenticationInfo);
+
+    @POST
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    Uni<AuthorisationClientDataDTO> refreshToken(Form authenticationInfo);
 }

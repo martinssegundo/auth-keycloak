@@ -4,6 +4,16 @@ import jakarta.ws.rs.core.Response;
 
 public class ExceptionUtil {
 
+
+    public static String buildErrorMessage(String method, Response response, String localizedMessage){
+        return String.format("Error when doing %s " +
+                        "Status: %d " +
+                        "message: %s ",
+                method,
+                response.getStatus(),
+                localizedMessage);
+    }
+
     public static String buildErrorMessage(String method, String login, Response response, String localizedMessage){
         return String.format("Error when doing %s " +
                         "Status: %d " +

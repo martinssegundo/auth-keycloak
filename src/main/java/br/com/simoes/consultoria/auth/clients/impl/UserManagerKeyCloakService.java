@@ -71,14 +71,7 @@ public class UserManagerKeyCloakService implements UserManagerService {
     private Uni<Void> sendActionsNewUser(String userId){
         return doLoginUserManger()
                 .flatMap(token -> keycloakUserClient.triggerUserActions(userId,BEARER+ token.accessToken(),ACTIONS))
-                .replaceWithVoid()
-                .onFailure()
-                .transform(error -> errorBuilder(
-                                error,
-                                userId,
-                                "UserManagerKeyCloakService.sendActionsNewUser()"
-                        )
-                );
+                .replaceWithVoid();
     }
 
     private UserCreationException errorBuilder(Throwable error, String user, String method) {
@@ -94,12 +87,15 @@ public class UserManagerKeyCloakService implements UserManagerService {
 
     private UserDTO buildUserToFirstSave(UserDTO userDTO) {
         return UserDTO.builder()
+                .username(userDTO.username())
                 .email(userDTO.email())
                 .firstName(userDTO.firstName())
                 .lastName(userDTO.lastName())
                 .enabled(Boolean.TRUE)
-                .emailVerified(Boolean.TRUE)
+                .emailVerified(Boolean.FALSE)
                 .credentials(List.of(buildFirstCredential()))
+                .requiredActions(List.of())
+                .groups(List.of())
                 .build();
     }
 

@@ -22,6 +22,7 @@ import static io.restassured.RestAssured.given;
 @QuarkusTestResource(KeycloakResource.class)
 @Slf4j
 class UserAPITest {
+
     @Inject
     UserAPI userAPI;
     ObjectMapper mapper = new ObjectMapper();
@@ -32,7 +33,7 @@ class UserAPITest {
     }
 
     @Test
-    void testCreateUserSucess() throws JsonProcessingException {
+    void testCreateUserSuccess() throws JsonProcessingException {
         given()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(buildUserCreteDTO(
