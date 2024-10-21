@@ -4,24 +4,38 @@ import br.com.simoes.consultoria.auth.apis.config.KeycloakResource;
 import br.com.simoes.consultoria.auth.apis.dtos.AuthorisationDataDTO;
 import br.com.simoes.consultoria.auth.apis.dtos.LoginDataDTO;
 import br.com.simoes.consultoria.auth.apis.dtos.UserCreateDTO;
+import br.com.simoes.consultoria.auth.clients.dtos.UserDTO;
+import br.com.simoes.consultoria.auth.clients.rest.KeycloakUserClient;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.quarkus.test.InjectMock;
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.Header;
+import io.smallrye.mutiny.Uni;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 import lombok.extern.slf4j.Slf4j;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockitoAnnotations;
+import org.keycloak.representations.idm.CredentialRepresentation;
+
+import java.util.List;
 
 import static io.restassured.RestAssured.given;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 @QuarkusTest
 @QuarkusTestResource(KeycloakResource.class)
 @Slf4j
 class UserAPITest {
+
+    @InjectMock
+    @RestClient
+    KeycloakUserClient keycloakUserClient;
 
     @Inject
     UserAPI userAPI;
@@ -29,11 +43,16 @@ class UserAPITest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
+        when(keycloakUserClient.triggerUserActions(any(), any(), any(String[].class)))
+                .thenReturn(Uni.createFrom().item(Response.status(200).header("Location", "/123456").build()));
     }
 
     @Test
     void testCreateUserSuccess() throws JsonProcessingException {
+        when(keycloakUserClient.createNewUser(
+                any(),
+                any()))
+                .thenReturn(Uni.createFrom().item(Response.status(201).header("Location", "/123456").build()));
         given()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(buildUserCreteDTO(
@@ -52,20 +71,11 @@ class UserAPITest {
 
 
     @Test
-    void testCreateUserErrorSameUser() throws JsonProcessingException {
-        given()
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(buildUserCreteDTO(
-                        "luiz.segundo.new",
-                        "Luiz",
-                        "Segundo",
-                        "luiz.segundo.novo@email.com"
-                ))
-                .header(new Header("Authorization", token("luiz", "123456")))
-                .when()
-                .post("/user")
-                .then()
-                .statusCode(201);
+    void testCreateUserError() throws JsonProcessingException {
+        when(keycloakUserClient.createNewUser(
+                any(),
+                any()))
+                .thenReturn(Uni.createFrom().failure(new RuntimeException("Error create user")));
 
         given()
                 .contentType(MediaType.APPLICATION_JSON)
@@ -94,6 +104,28 @@ class UserAPITest {
                 .lastName(lastName)
                 .username(username)
                 .build();
+    }
+
+    private UserDTO buildUserDTO(UserCreateDTO userCreateDTO){
+        return  UserDTO.builder()
+                .username(userCreateDTO.username())
+                .email(userCreateDTO.email())
+                .firstName(userCreateDTO.firstName())
+                .lastName(userCreateDTO.lastName())
+                .enabled(Boolean.TRUE)
+                .emailVerified(Boolean.FALSE)
+                .credentials(List.of(buildFirstCredential()))
+                .requiredActions(List.of())
+                .groups(List.of())
+                .build();
+    }
+
+    private CredentialRepresentation buildFirstCredential() {
+        CredentialRepresentation credentialRepresentation = new CredentialRepresentation();
+        credentialRepresentation.setTemporary(false);
+        credentialRepresentation.setType(CredentialRepresentation.PASSWORD);
+        credentialRepresentation.setValue("Us3rCr3d3nt14l");
+        return credentialRepresentation;
     }
 
 
