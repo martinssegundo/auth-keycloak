@@ -8,11 +8,11 @@ import br.com.simoes.consultoria.auth.mappers.UserMapper;
 import io.smallrye.mutiny.Uni;
 
 @QualifierCA("createUserUseCaseKeycloak")
-public class CreateUserKeycloakUseCase implements CreateUserUseCase {
+public class CreateUserUseCaseKeycloak implements CreateUserUseCase {
     private final UserManagerService createUserService;
     private final UserMapper userMapper;
 
-    public CreateUserKeycloakUseCase(final UserManagerService createUserService,
+    public CreateUserUseCaseKeycloak(final UserManagerService createUserService,
                                      final UserMapper userMapper){
         this.createUserService = createUserService;
         this.userMapper = userMapper;

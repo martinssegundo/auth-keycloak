@@ -5,21 +5,18 @@ import br.com.simoes.consultoria.auth.clients.AuthenticationService;
 import br.com.simoes.consultoria.auth.clients.UserManagerService;
 import br.com.simoes.consultoria.auth.clients.dtos.AuthorisationClientDataDTO;
 import br.com.simoes.consultoria.auth.clients.dtos.UserDTO;
-import br.com.simoes.consultoria.auth.clients.exception.UserCreationException;
 import br.com.simoes.consultoria.auth.clients.rest.KeycloakUserClient;
 import br.com.simoes.consultoria.auth.configs.UserMagement;
-import io.netty.handler.codec.http.HttpResponseStatus;
 import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
-import org.keycloak.representations.idm.CredentialRepresentation;
 
 import java.util.List;
 import java.util.Objects;
 
-import static br.com.simoes.consultoria.auth.clients.util.ExceptionUtil.buildErrorMessage;
+import static br.com.simoes.consultoria.auth.clients.util.ManagerUserUtil.*;
 
 @ApplicationScoped
 @Slf4j
@@ -59,12 +56,32 @@ public class UserManagerKeyCloakService implements UserManagerService {
                 })
                 .replaceWithVoid()
                 .onFailure()
-                .transform(error -> errorBuilder(
+                .transform(error -> creationErrorBuilder(
                                 error,
                                 userDTO.username(),
                                 "UserManagerKeyCloakService.createUser()"
                         )
                 );
+
+    }
+
+    @Override
+    public Uni<List<UserDTO>> findUser(String username, Integer max, Integer page) {
+        return doLoginUserManger()
+                .invoke(() -> log.info("Listing users ==================================================================="))
+                .flatMap(token -> sarchStrategy(BEARER+token.accessToken(),username,max,page))
+                .onFailure()
+                .transform(error -> listErrorBuilder(
+                        error,
+                        username,
+                        "UserManagerKeyCloakService.findUser()"
+                ));
+    }
+
+    private Uni<List<UserDTO>> sarchStrategy(String accessToken, String username, Integer max, Integer page) {
+        return username == null
+                ? keycloakUserClient.getUsers(accessToken,max,page)
+                : keycloakUserClient.getUsers(accessToken,username,max,page);
 
     }
 
@@ -74,45 +91,14 @@ public class UserManagerKeyCloakService implements UserManagerService {
                 .replaceWithVoid();
     }
 
-    private UserCreationException errorBuilder(Throwable error, String user, String method) {
-        var messageError = buildErrorMessage(
-                method,
-                user,
-                error.getLocalizedMessage()
-        );
-        log.error(messageError);
-        return new UserCreationException(messageError, HttpResponseStatus.INTERNAL_SERVER_ERROR.code());
-    }
 
-
-    private UserDTO buildUserToFirstSave(UserDTO userDTO) {
-        return UserDTO.builder()
-                .username(userDTO.username())
-                .email(userDTO.email())
-                .firstName(userDTO.firstName())
-                .lastName(userDTO.lastName())
-                .enabled(Boolean.TRUE)
-                .emailVerified(Boolean.FALSE)
-                .credentials(List.of(buildFirstCredential()))
-                .requiredActions(List.of())
-                .groups(List.of())
-                .build();
-    }
-
-    private CredentialRepresentation buildFirstCredential() {
-        CredentialRepresentation credentialRepresentation = new CredentialRepresentation();
-        credentialRepresentation.setTemporary(false);
-        credentialRepresentation.setType(CredentialRepresentation.PASSWORD);
-        credentialRepresentation.setValue("Us3rCr3d3nt14l");
-        return credentialRepresentation;
-    }
 
     private Uni<AuthorisationClientDataDTO> doLoginUserManger() {
         if (Objects.isNull(authorisationClientDataDTO) ||
                 authorisationClientDataDTO.expiredTime() < System.currentTimeMillis())
             return authenticationService.login(userMagement.user(), userMagement.password())
                     .onFailure()
-                    .transform(error -> errorBuilder(
+                    .transform(error -> creationErrorBuilder(
                                     error,
                                     userMagement.user(),
                                     "UserManagerKeyCloakService.doLoginUserManger()"

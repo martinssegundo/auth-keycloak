@@ -1,6 +1,6 @@
 package br.com.simoes.consultoria.auth.apis.handdlers.util;
 
-import br.com.simoes.consultoria.auth.apis.dtos.ErrorDTO;
+import br.com.simoes.consultoria.auth.apis.dtos.response.ErrorDTO;
 
 import java.time.LocalDateTime;
 

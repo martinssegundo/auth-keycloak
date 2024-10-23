@@ -1,9 +1,9 @@
 package br.com.simoes.consultoria.auth.apis;
 
 import br.com.simoes.consultoria.auth.apis.config.KeycloakResource;
-import br.com.simoes.consultoria.auth.apis.dtos.AuthorisationDataDTO;
-import br.com.simoes.consultoria.auth.apis.dtos.LoginDataDTO;
-import br.com.simoes.consultoria.auth.apis.dtos.UserCreateDTO;
+import br.com.simoes.consultoria.auth.apis.dtos.response.AuthorisationDataDTO;
+import br.com.simoes.consultoria.auth.apis.dtos.request.LoginDataDTO;
+import br.com.simoes.consultoria.auth.apis.dtos.request.UserCreateDTO;
 import br.com.simoes.consultoria.auth.clients.dtos.UserDTO;
 import br.com.simoes.consultoria.auth.clients.rest.KeycloakUserClient;
 import com.fasterxml.jackson.core.JsonProcessingException;

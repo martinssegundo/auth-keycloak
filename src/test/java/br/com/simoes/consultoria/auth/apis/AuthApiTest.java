@@ -1,21 +1,17 @@
 package br.com.simoes.consultoria.auth.apis;
 
 import br.com.simoes.consultoria.auth.apis.config.KeycloakResource;
-import br.com.simoes.consultoria.auth.apis.dtos.AuthorisationDataDTO;
-import br.com.simoes.consultoria.auth.apis.dtos.LoginDataDTO;
-import dasniko.testcontainers.keycloak.KeycloakContainer;
+import br.com.simoes.consultoria.auth.apis.dtos.response.AuthorisationDataDTO;
+import br.com.simoes.consultoria.auth.apis.dtos.request.LoginDataDTO;
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.mockito.MockitoAnnotations;
-import org.testcontainers.containers.PostgreSQLContainer;
 
 import java.io.IOException;
 import java.util.Collections;

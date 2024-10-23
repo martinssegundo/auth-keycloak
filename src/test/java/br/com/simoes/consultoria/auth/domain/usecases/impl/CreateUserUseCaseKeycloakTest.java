@@ -19,18 +19,18 @@ import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.when;
 
 @QuarkusTest
-class CreateUserKeycloakUseCaseTest {
+class CreateUserUseCaseKeycloakTest {
     @Mock
     UserManagerService createUserService;
 
     @Inject
     UserMapper userMapper;
-    CreateUserKeycloakUseCase createUserKeycloakUseCase;
+    CreateUserUseCaseKeycloak createUserUseCaseKeycloak;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        createUserKeycloakUseCase = new CreateUserKeycloakUseCase(createUserService, userMapper);
+        createUserUseCaseKeycloak = new CreateUserUseCaseKeycloak(createUserService, userMapper);
     }
 
     @Test
@@ -38,7 +38,7 @@ class CreateUserKeycloakUseCaseTest {
         when(createUserService.createUser(any(UserDTO.class)))
                 .thenReturn(Uni.createFrom().voidItem());
 
-        Uni<Void> result = createUserKeycloakUseCase.createUser(new User());
+        Uni<Void> result = createUserUseCaseKeycloak.createUser(new User());
         Assertions.assertEquals(Uni.createFrom().voidItem(), result);
     }
 
@@ -53,7 +53,7 @@ class CreateUserKeycloakUseCaseTest {
                                 ))
                 );
 
-        createUserKeycloakUseCase.createUser(buildUser())
+        createUserUseCaseKeycloak.createUser(buildUser())
                 .subscribe()
                 .withSubscriber(UniAssertSubscriber.create())
                 .assertFailed();

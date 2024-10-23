@@ -6,6 +6,7 @@ import br.com.simoes.consultoria.auth.domain.entities.User;
 import java.util.List;
 
 public final class UserBuilder {
+    private String userIdentifier;
     private String username;
     private boolean enabled;
     private boolean emailVerified;
@@ -19,6 +20,11 @@ public final class UserBuilder {
 
     public static UserBuilder builder() {
         return new UserBuilder();
+    }
+
+    public UserBuilder userIdentifier(String userIdentifier) {
+        this.userIdentifier = userIdentifier;
+        return this;
     }
 
     public UserBuilder username(String username) {
@@ -58,6 +64,7 @@ public final class UserBuilder {
 
     public User build() {
         User user = new User();
+        user.setUserIdentifier(userIdentifier);
         user.setUsername(username);
         user.setEnabled(enabled);
         user.setEmailVerified(emailVerified);
