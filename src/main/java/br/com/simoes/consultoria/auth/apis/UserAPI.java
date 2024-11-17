@@ -4,7 +4,7 @@ import br.com.simoes.consultoria.auth.apis.dtos.request.UserCreateDTO;
 import br.com.simoes.consultoria.auth.apis.dtos.request.UserCriteriaDTO;
 import br.com.simoes.consultoria.auth.configs.QualifierCA;
 import br.com.simoes.consultoria.auth.domain.usecases.CreateUserUseCase;
-import br.com.simoes.consultoria.auth.domain.usecases.FindUserUseCase;
+import br.com.simoes.consultoria.auth.domain.usecases.FindUserByLoginOrNameOrEmailUseCase;
 import br.com.simoes.consultoria.auth.mappers.UserMapper;
 import io.quarkus.security.identity.SecurityIdentity;
 import io.smallrye.common.annotation.Blocking;
@@ -21,7 +21,6 @@ import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.media.Content;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
-import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
@@ -31,43 +30,44 @@ import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 public class UserAPI {
 
     private final CreateUserUseCase createUserUseCase;
-    private final FindUserUseCase findUserUseCase;
+    private final FindUserByLoginOrNameOrEmailUseCase findUserByLoginOrNameOrEmailUseCase;
     private final UserMapper userMapper;
     private final SecurityIdentity securityIdentity;
     private final JsonWebToken jwt;
 
     @Inject
     public UserAPI(@QualifierCA("createUserUseCaseKeycloak") final CreateUserUseCase createUserUseCase,
-                   @QualifierCA("findUserUseCaseKeyCloak") final FindUserUseCase findUserUseCase,
+                   @QualifierCA("findUserUseCaseKeyCloak") final FindUserByLoginOrNameOrEmailUseCase findUserByLoginOrNameOrEmailUseCase,
                    final UserMapper userMapper,
                    final SecurityIdentity securityIdentity,
                    final JsonWebToken jwt) {
         this.createUserUseCase = createUserUseCase;
         this.userMapper = userMapper;
         this.securityIdentity = securityIdentity;
-        this.findUserUseCase = findUserUseCase;
+        this.findUserByLoginOrNameOrEmailUseCase = findUserByLoginOrNameOrEmailUseCase;
         this.jwt = jwt;
     }
 
     @GET
+    @Path("/find")
     @RolesAllowed("manager")
     @Blocking
     @Operation(
-            summary = "Listar todos os usuários",
+            summary = "Busca usuároi por login, nome ou email",
             description = "Retorna uma lista de usuários filtrados com base nos critérios fornecidos"
     )
     @APIResponse(
             responseCode = "200",
-            description = "Lista de usuários retornada com sucesso",
+            description = "Lista de usuários encontrados",
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserCriteriaDTO.class))
     )
     @APIResponse(
             responseCode = "403",
             description = "Acesso negado"
     )
-    public Uni<Response> listaAllUser(
-            @RequestBody(description = "Critérios de pesquisa de usuários") UserCriteriaDTO userCriteria) {
-        return findUserUseCase.findUser(userCriteria.username(), userCriteria.maxUser(), userCriteria.page())
+    public Uni<Response> findUserByNameOrFirstNameOrEmail(
+            @RequestBody(description = "Critérios de pesquisa de usuários, login, primeiro nome ou email") UserCriteriaDTO userCriteria) {
+        return findUserByLoginOrNameOrEmailUseCase.findUserByNameOrFirsNamOrEmail(userCriteria.search(), userCriteria.maxUser(), userCriteria.page())
                 .map(userMapper::convertEntityListToResponseList)
                 .map(listResponse -> Response.ok(listResponse).build());
     }

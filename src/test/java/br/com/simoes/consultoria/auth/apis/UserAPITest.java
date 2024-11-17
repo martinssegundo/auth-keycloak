@@ -69,6 +69,28 @@ class UserAPITest {
     }
 
 
+    @Test
+    void testFindUserSuccess() throws JsonProcessingException {
+        when(keycloakUserClient.createNewUser(
+                any(),
+                any()))
+                .thenReturn(Uni.createFrom().item(Response.status(201).header("Location", "/123456").build()));
+        given()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(buildUserCreteDTO(
+                        "luiz.segundo",
+                        "Luiz",
+                        "Segundo",
+                        "luiz.segundo@email.com"
+                ))
+                .header(new Header("Authorization", token("luiz", "123456")))
+                .when()
+                .post("/user")
+                .then()
+                .statusCode(201);
+    }
+
+
 
     @Test
     void testCreateUserError() throws JsonProcessingException {

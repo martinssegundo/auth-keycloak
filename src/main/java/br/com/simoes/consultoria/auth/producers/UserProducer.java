@@ -2,9 +2,9 @@ package br.com.simoes.consultoria.auth.producers;
 
 import br.com.simoes.consultoria.auth.clients.UserManagerService;
 import br.com.simoes.consultoria.auth.configs.QualifierCA;
-import br.com.simoes.consultoria.auth.domain.usecases.FindUserUseCase;
+import br.com.simoes.consultoria.auth.domain.usecases.FindUserByLoginOrNameOrEmailUseCase;
 import br.com.simoes.consultoria.auth.domain.usecases.impl.CreateUserUseCaseKeycloak;
-import br.com.simoes.consultoria.auth.domain.usecases.impl.FindUserUseCaseKeyCloak;
+import br.com.simoes.consultoria.auth.domain.usecases.impl.FindUserByLoginOrNameOrEmailUseCaseKeyCloak;
 import br.com.simoes.consultoria.auth.mappers.UserMapper;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Produces;
@@ -21,9 +21,9 @@ public class UserProducer {
 
     @Produces
     @QualifierCA("findUserUseCaseKeyCloak")
-    public FindUserUseCase findUserUseCaseCaseKeycloak(UserManagerService userManagerService,
-                                                     UserMapper userMapper) {
-        return new FindUserUseCaseKeyCloak(userManagerService, userMapper);
+    public FindUserByLoginOrNameOrEmailUseCase findUserUseCaseCaseKeycloak(UserManagerService userManagerService,
+                                                                           UserMapper userMapper) {
+        return new FindUserByLoginOrNameOrEmailUseCaseKeyCloak(userManagerService, userMapper);
     }
 
 }

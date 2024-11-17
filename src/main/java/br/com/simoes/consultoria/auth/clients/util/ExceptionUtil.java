@@ -34,4 +34,11 @@ public class ExceptionUtil {
                 localizedMessage,
                 login);
     }
+
+    public static String buildErrorMessage(String method, String localizedMessage){
+        return String.format("Error when doing %s " +
+                        "message: %s ",
+                method,
+                localizedMessage);
+    }
 }

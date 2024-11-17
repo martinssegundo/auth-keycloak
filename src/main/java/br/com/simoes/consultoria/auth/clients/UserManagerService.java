@@ -9,5 +9,9 @@ public interface UserManagerService {
 
     Uni<Void> createUser(UserDTO userDTO);
 
-    Uni<List<UserDTO>> findUser(String username, Integer max, Integer page);
+    Uni<List<UserDTO>> findUserByNameOrFirstNameOrEmail(String username, Integer max, Integer page);
+
+    Uni<List<UserDTO>> listAll(Integer max, Integer page);
+
+    Uni<Void> disableUserByUserId(String userId);
 }

@@ -27,17 +27,32 @@ public interface KeycloakUserClient {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    Uni<List<UserDTO>> getUsers(@HeaderParam("Authorization") String authToken,
-                                @QueryParam("search") String username,
-                                @QueryParam("max") @DefaultValue("20") int max,
-                                @QueryParam("first") @DefaultValue("0") int page);
+    Uni<List<UserDTO>> getUsersByFilter(@HeaderParam("Authorization") String authToken,
+                                        @QueryParam("search") String username,
+                                        @QueryParam("max") @DefaultValue("20") int max,
+                                        @QueryParam("first") @DefaultValue("0") int page);
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    Uni<List<UserDTO>> getUsers(@HeaderParam("Authorization") String authToken,
-                                @QueryParam("max") @DefaultValue("20") int max,
-                                @QueryParam("first") @DefaultValue("0") int page);
+    Uni<List<UserDTO>> getAllUsers(@HeaderParam("Authorization") String authToken,
+                                   @QueryParam("max") @DefaultValue("20") int max,
+                                   @QueryParam("first") @DefaultValue("0") int page);
+
+    @GET
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    Uni<UserDTO> updateUserByUserID(@HeaderParam("Authorization") String authToken,
+                                  @PathParam("id") @DefaultValue("0") String userID,
+                                  UserDTO user);
+
+    @GET
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    Uni<UserDTO> findUserByUserID(@HeaderParam("Authorization") String authToken,
+                                    @PathParam("id") @DefaultValue("0") String userID);
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)

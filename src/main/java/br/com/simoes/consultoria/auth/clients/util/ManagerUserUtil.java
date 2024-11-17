@@ -1,6 +1,7 @@
 package br.com.simoes.consultoria.auth.clients.util;
 
 import br.com.simoes.consultoria.auth.clients.dtos.UserDTO;
+import br.com.simoes.consultoria.auth.clients.exception.FindUserException;
 import br.com.simoes.consultoria.auth.clients.exception.UserCreationException;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import lombok.extern.slf4j.Slf4j;
@@ -23,14 +24,24 @@ public class ManagerUserUtil {
         return new UserCreationException(messageError, HttpResponseStatus.INTERNAL_SERVER_ERROR.code());
     }
 
-    public static UserCreationException listErrorBuilder(Throwable error, String user, String method) {
+    public static FindUserException listErrorBuilder(Throwable error, String user, String method) {
         var messageError = buildErrorMessage(
                 method,
                 user,
                 error.getLocalizedMessage()
         );
         log.error(messageError);
-        return new UserCreationException(messageError, HttpResponseStatus.INTERNAL_SERVER_ERROR.code());
+        return new FindUserException(messageError, HttpResponseStatus.INTERNAL_SERVER_ERROR.code());
+    }
+
+
+    public static FindUserException listErrorBuilder(Throwable error, String method) {
+        var messageError = buildErrorMessage(
+                method,
+                error.getLocalizedMessage()
+        );
+        log.error(messageError);
+        return new FindUserException(messageError, HttpResponseStatus.INTERNAL_SERVER_ERROR.code());
     }
 
 

@@ -5,7 +5,7 @@ import io.smallrye.mutiny.Uni;
 
 import java.util.List;
 
-public interface FindUserUseCase {
+public interface FindUserByLoginOrNameOrEmailUseCase {
 
-    Uni<List<User>> findUser(String username, Integer max, Integer page);
+    Uni<List<User>> findUserByNameOrFirsNamOrEmail(String username, Integer max, Integer page);
 }

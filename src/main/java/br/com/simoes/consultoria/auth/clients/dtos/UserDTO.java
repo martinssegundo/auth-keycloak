@@ -81,4 +81,32 @@ public record UserDTO (
 
         @JsonProperty("username")
         String username
-) { }
+) {
+        public static UserDTO disableUser(UserDTO user) {
+                return UserDTO.builder()
+                        .access(user.access)
+                        .attributes(user.attributes)
+                        .clientConsents(user.clientConsents)
+                        .clientRoles(user.clientRoles)
+                        .createdTimestamp(user.createdTimestamp)
+                        .credentials(user.credentials)
+                        .disableableCredentialTypes(user.disableableCredentialTypes)
+                        .email(user.email)
+                        .emailVerified(user.emailVerified)
+                        .enabled(false)
+                        .federatedIdentities(user.federatedIdentities)
+                        .federationLink(user.federationLink)
+                        .firstName(user.firstName)
+                        .groups(user.groups)
+                        .id(user.id)
+                        .lastName(user.lastName)
+                        .notBefore(user.notBefore)
+                        .origin(user.origin)
+                        .realmRoles(user.realmRoles)
+                        .requiredActions(user.requiredActions)
+                        .self(user.self)
+                        .serviceAccountClientId(user.serviceAccountClientId)
+                        .username(user.username)
+                        .build();
+        }
+}
